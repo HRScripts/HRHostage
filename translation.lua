@@ -15,6 +15,14 @@ return {
         fail_no_ped_around = 'There is no people around!',
         fail_no_weapon = 'You don\'t have a weapon on you, or at least you don\'t have the right weapon!',
     },
+    fr = {
+        controlsDescription = '[%s] - Pour libérer l\'otage [%s] - Pour tuer',
+        fail_dead_ped = 'L\'hotage est mort',
+        fail_dead_ped_in_veh = 'Cet humain est mort et il est dans une voiture',
+        fail_ped_in_vehicle = 'L\'humain est dans une voiture, vous ne pouvez pas sortir les gens directement de leur voiture !',
+        fail_no_ped_around = 'Il n\'y a personne autour !',
+        fail_no_weapon = 'Vous n\'avez pas d\'arme sur vous, ou du moins vous n\'avez pas la bonne arme !',
+    },
     de = {
         controlsDescription = '[%s] – Um die Geisel zu befreien [%s] – Um ihn zu töten',
         fail_dead_ped = 'Der Kerl ist tot!',
