@@ -1,4 +1,4 @@
-local config = {}
+local config <const> = {}
 
 config.language = 'en'
 
@@ -9,7 +9,16 @@ config.controls = {
     kill = 'K'
 }
 
-config.commandName = 'takehostage'
+config.access = {
+    command = {
+        enable = true,
+        commandName = 'takehostage'
+    },
+    key = {
+        enable = true,
+        control = 'F9'
+    }
+}
 
 config.weapons = {
     'WEAPON_PISTOL',
@@ -17,4 +26,4 @@ config.weapons = {
     'WEAPON_MINISMG'
 }
 
-return config
+return config --[[@as HRHostageConfig]]

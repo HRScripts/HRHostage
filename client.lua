@@ -1,5 +1,5 @@
-local HRLib <const>, Translation <const> = HRLib --[[@as HRLibClientFunctions]], Translation
-local config <const> = HRLib.require(('@%s/config.lua'):format(GetCurrentResourceName()))
+local HRLib <const>, Translation <const> = HRLib --[[@as HRLibClientFunctions]], Translation --[[@as HRHostageTranslation]]
+local config <const> = HRLib.require(('@%s/config.lua'):format(GetCurrentResourceName())) --[[@as HRHostageConfig]]
 
 -- Functions
 
@@ -33,9 +33,7 @@ local on = function(status, killTarget, playerId)
     end
 end
 
--- Commands
-
-HRLib.RegCommand(config.commandName, function(_, _, IPlayer)
+local cmdFun = function(_, _, IPlayer)
     local closestPed <const> = HRLib.ClosestPed()
     if closestPed then
         local targetPed <const>, distance <const>, hostaged = closestPed.ped, closestPed.distance, nil
@@ -120,4 +118,15 @@ HRLib.RegCommand(config.commandName, function(_, _, IPlayer)
     else
         HRLib.Notify(Translation.fail_no_ped_around, 'error')
     end
-end)
+end
+
+-- Commands
+
+if config.access.command.enable then
+    HRLib.RegCommand(config.access.command.commandName, cmdFun)
+end
+
+if config.access.key.enable then
+    HRLib.RegCommand('+takeAHostage', cmdFun)
+    RegisterKeyMapping('+takeAHostage', Translation.controlDescription, 'keyboard', config.access.key.control)
+end
