@@ -1,0 +1,15 @@
+---@class HRHostageConfig
+---@field language string
+---@field radius number
+---@field controls { release: string, kill: string }
+---@field access { command: { enable: boolean, commandName: string }, key: { enable: boolean, control: string } }
+---@field weapons string[]
+
+---@class HRHostageTranslation
+---@field controlsDescription string
+---@field fail_dead_ped string
+---@field fail_dead_ped_in_veh string
+---@field fail_ped_in_vehicle string
+---@field fail_no_ped_around string
+---@field fail_no_weapon string
+---@field controlDescription string
