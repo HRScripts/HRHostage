@@ -3,34 +3,8 @@ local config <const> = HRLib.require(('@%s/config.lua'):format(GetCurrentResourc
 
 -- Functions
 
-local on = function(status, killTarget, playerId)
-    local targetPed <const>, ped <const> = HRLib.ClosestPed(playerId).ped --[[@as integer]], GetPlayerPed(GetPlayerFromServerId(playerId))
-
-    if status == 'start' then
-        HRLib.RequestAnimDict('anim@gangops@hostage@')
-
-        AttachEntityToEntity(targetPed, ped, 0, -0.24, 0.11, 0.0, 0.5, 0.5, 0.0, false, false, false, false, 2, false)
-        TaskPlayAnim(ped, 'anim@gangops@hostage@', 'perp_idle', 8.0, -8.0, -1, 120, 0, false, false, false)
-        TaskPlayAnim(targetPed, 'anim@gangops@hostage@', 'victim_fail', 8.0, -8.0, -1, 120, 0, false, false, false)
-
-        if IsPedAPlayer(targetPed) then
-            SetPlayerControl(ped, false, 0)
-        end
-    elseif status == 'stop' then
-        DetachEntity(targetPed, true, false)
-        ClearPedTasks(targetPed)
-        ClearPedTasks(ped)
-
-        if IsPedAPlayer(targetPed) then
-            SetPlayerControl(ped, true, 0)
-        end
-
-        HRLib.hideTextUI()
-    end
-
-    if killTarget then
-        SetEntityHealth(targetPed, 0)
-    end
+local onEvent = function(status, targetNetId, netId, killTarget)
+    TriggerServerEvent('HRHostage:on', status, targetNetId, netId, killTarget, GetPlayerServerId(NetworkGetPlayerIndexFromPed(NetworkGetEntityFromNetworkId(targetNetId))))
 end
 
 local cmdFun = function(_, _, IPlayer)
@@ -53,7 +27,7 @@ local cmdFun = function(_, _, IPlayer)
             else
                 for i=1, #config.weapons do
                     if GetSelectedPedWeapon(IPlayer.ped) == joaat(config.weapons[i]) and HasPedGotWeapon(IPlayer.ped, joaat(config.weapons[i]), false) then
-                        on('start', nil, IPlayer.source)
+                        onEvent(true, NetworkGetNetworkIdFromEntity(targetPed), NetworkGetNetworkIdFromEntity(IPlayer.ped))
 
                         hostaged = true
 
@@ -78,11 +52,11 @@ local cmdFun = function(_, _, IPlayer)
                 HRLib.showTextUI(Translation.controlsDescription:format(config.controls.release, config.controls.kill))
 
                 if IsEntityDead(IPlayer.ped) then
-                    on('stop')
+                    onEvent(false)
                 else
                     while hostaged do
                         if IsEntityDead(IPlayer.ped) or IsEntityDead(targetPed) then
-                            on('stop')
+                            onEvent(false, NetworkGetNetworkIdFromEntity(targetPed), NetworkGetNetworkIdFromEntity(IPlayer.ped))
 
                             hostaged = false
 
@@ -90,14 +64,14 @@ local cmdFun = function(_, _, IPlayer)
                         end
 
                         if IsControlJustPressed(0, HRLib.Keys[config.controls.release]) then
-                            on('stop')
+                            onEvent(false, NetworkGetNetworkIdFromEntity(targetPed), NetworkGetNetworkIdFromEntity(IPlayer.ped))
 
                             hostaged = false
 
                             return
                         elseif IsControlJustPressed(0, HRLib.Keys[config.controls.kill]) then
                             SetPedShootsAtCoord(IPlayer.ped, 0.0, 0.0, 0.0, false)
-                            on('stop', true)
+                            onEvent(false, NetworkGetNetworkIdFromEntity(targetPed), NetworkGetNetworkIdFromEntity(IPlayer.ped), true)
 
                             hostaged = false
 
@@ -105,7 +79,7 @@ local cmdFun = function(_, _, IPlayer)
                         end
 
                         if not IsEntityAttached(targetPed) and hostaged then
-                            AttachEntityToEntity(targetPed, IPlayer.ped, 0, -0.24, 0.11, 0.0, 0.5, 0.5, 0.0, false, false, false, false, 2, false)
+                            TriggerServerEvent('HRHostage:attachPed', PedToNet(targetPed), PedToNet(IPlayer.ped))
                         end
 
                         Wait(4)
@@ -119,6 +93,45 @@ local cmdFun = function(_, _, IPlayer)
         HRLib.Notify(Translation.fail_no_ped_around, 'error')
     end
 end
+
+-- Events
+
+RegisterNetEvent('HRHostage:on', function(status, targetNetId, netId, killTarget)
+    local targetPed <const>, ped <const> = NetworkGetEntityFromNetworkId(targetNetId), NetworkGetEntityFromNetworkId(netId)
+
+    if status then
+        HRLib.RequestAnimDict({ 'anim@gangops@hostage@', 'missminuteman_1ig_2' })
+        AttachEntityToEntity(targetPed, ped, 0, -0.24, 0.11, 0.0, 0.5, 0.5, 0.0, false, false, false, false, 2, false)
+        TaskPlayAnim(ped, 'anim@gangops@hostage@', 'perp_idle', 8.0, 8.0, -1, 63, 0, false, false, false)
+        TaskPlayAnim(targetPed, 'missminuteman_1ig_2', 'handsup_base', 8.0, 8.0, -1, 2, 0, false, false, false)
+
+        if IsPedAPlayer(targetPed) then
+            SetPlayerControl(NetworkGetPlayerIndexFromPed(targetPed), false, 1 << 8)
+        end
+    else
+        DetachEntity(targetPed, true, false)
+        ClearPedTasks(targetPed)
+        ClearPedTasks(ped)
+
+        if IsPedAPlayer(targetPed) then
+            SetPlayerControl(NetworkGetPlayerIndexFromPed(targetPed), true, 1 << 8)
+        end
+
+        HRLib.hideTextUI()
+    end
+
+    if killTarget then
+        SetEntityHealth(targetPed, 0)
+    end
+end)
+
+RegisterNetEvent('HRHostage:kill', function(netId)
+    SetEntityHealth(NetworkGetEntityFromNetworkId(netId), 0)
+end)
+
+RegisterNetEvent('HRHostage:attachPed', function(targetNetId, netId)
+    AttachEntityToEntity(NetworkGetEntityFromNetworkId(targetNetId), NetworkGetEntityFromNetworkId(netId), 0, -0.24, 0.11, 0.0, 0.5, 0.5, 0.0, false, false, false, false, 2, false)
+end)
 
 -- Commands
 
