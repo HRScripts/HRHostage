@@ -5,6 +5,7 @@ lua54 'yes'
 name 'HRHostage'
 author 'HRScripts Development'
 description 'Take Hostage Script'
+repository 'https://github.com/HRScripts/HRHostage'
 version '1.0.2'
 
 shared_script '@HRLib/import.lua'
