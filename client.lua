@@ -70,12 +70,16 @@ local cmdFun = function(_, _, IPlayer)
 
                             return
                         elseif IsControlJustPressed(0, HRLib.Keys[config.controls.kill]) then
-                            SetPedShootsAtCoord(IPlayer.ped, 0.0, 0.0, 0.0, false)
-                            onEvent(false, NetworkGetNetworkIdFromEntity(targetPed), NetworkGetNetworkIdFromEntity(IPlayer.ped), true)
+                            if GetPedAmmoByType(IPlayer.ped, GetPedAmmoTypeFromWeapon(IPlayer.ped, GetSelectedPedWeapon(IPlayer.ped))) >= 1 then
+                                SetPedShootsAtCoord(IPlayer.ped, 0.0, 0.0, 0.0, false)
+                                onEvent(false, NetworkGetNetworkIdFromEntity(targetPed), NetworkGetNetworkIdFromEntity(IPlayer.ped), true)
 
-                            hostaged = false
+                                hostaged = false
 
-                            return
+                                return
+                            else
+                                HRLib.Notify(Translation.noWeaponAmmo, 'error')
+                            end
                         end
 
                         if not IsEntityAttached(targetPed) and hostaged then
@@ -100,10 +104,10 @@ RegisterNetEvent('HRHostage:on', function(status, targetNetId, netId, killTarget
     local targetPed <const>, ped <const> = NetworkGetEntityFromNetworkId(targetNetId), NetworkGetEntityFromNetworkId(netId)
 
     if status then
-        HRLib.RequestAnimDict({ 'anim@gangops@hostage@', 'missminuteman_1ig_2' })
+        HRLib.RequestAnimDict({ config.animations.aimAtPed.dict, config.animations.hostagedPedAnim.dict })
         AttachEntityToEntity(targetPed, ped, 0, -0.24, 0.11, 0.0, 0.5, 0.5, 0.0, false, false, false, false, 2, false)
-        TaskPlayAnim(ped, 'anim@gangops@hostage@', 'perp_idle', 8.0, 8.0, -1, 63, 0, false, false, false)
-        TaskPlayAnim(targetPed, 'missminuteman_1ig_2', 'handsup_base', 8.0, 8.0, -1, 2, 0, false, false, false)
+        TaskPlayAnim(ped, config.animations.aimAtPed.dict, config.animations.aimAtPed.anim, 8.0, 8.0, -1, 63, 0, false, false, false)
+        TaskPlayAnim(targetPed, config.animations.hostagedPedAnim.dict, config.animations.hostagedPedAnim.anim, 8.0, 8.0, -1, 2, 0, false, false, false)
 
         if IsPedAPlayer(targetPed) then
             SetPlayerControl(NetworkGetPlayerIndexFromPed(targetPed), false, 1 << 8)

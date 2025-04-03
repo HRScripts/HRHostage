@@ -4,6 +4,8 @@
 ---@field controls { release: string, kill: string }
 ---@field access { command: { enable: boolean, commandName: string }, key: { enable: boolean, control: string } }
 ---@field weapons string[]
+---@field hostageWithNoAmmo boolean
+---@field animations { aimAtPed: { anim: string, dict: string }, hostagedPedAnim: { anim: string, dict: string } }
 
 ---@class HRHostageTranslation
 ---@field controlsDescription string
@@ -13,3 +15,4 @@
 ---@field fail_no_ped_around string
 ---@field fail_no_weapon string
 ---@field controlDescription string
+---@field noWeaponAmmo string

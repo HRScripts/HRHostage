@@ -26,4 +26,17 @@ config.weapons = {
     'WEAPON_MINISMG'
 }
 
+config.animations = {
+    aimAtPed = {
+        anim = 'perp_idle',
+        dict = 'anim@gangops@hostage@'
+    },
+    hostagedPedAnim = {
+        anim = 'handsup_base',
+        dict = 'missminuteman_1ig_2'
+    }
+}
+
+config.hostageWithNoAmmo = true
+
 return config --[[@as HRHostageConfig]]

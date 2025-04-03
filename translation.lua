@@ -6,7 +6,8 @@ return {
         fail_ped_in_vehicle = 'Човекът е в кола, не можеш да го вземеш за заложник докато е в колата!',
         fail_no_ped_around = 'Няма човек наблизо!',
         fail_no_weapon = 'Не държите оръжие в себе си или поне не държите правилното оръжие!',
-        controlDescription = 'Бутон за взимане на заложник'
+        controlDescription = 'Бутон за взимане на заложник',
+        noWeaponAmmo = 'Не можеш да взимаш заложник, нямаш патрони!'
     },
     en = {
         controlsDescription = '[%s] - To release the hostage [%s] - To kill it',
@@ -16,6 +17,7 @@ return {
         fail_no_ped_around = 'There is no people around!',
         fail_no_weapon = 'You don\'t have a weapon on you, or at least you don\'t have the right weapon!',
         controlDescription = 'Button to take a hostage',
+        noWeaponAmmo = 'You can\'t take a hostage, you don\'t have any ammo!'
     },
     de = {
         controlsDescription = '[%s] – Um die Geisel zu befreien [%s] – Um ihn zu töten',
@@ -25,6 +27,7 @@ return {
         fail_no_ped_around = 'Es ist kein Typ in der Nähe!',
         fail_no_weapon = 'Du hast keine Waffe bei dir, oder zumindest hast du nicht die richtige Waffe!',
         controlDescription = 'Schaltfläche zur Geiselnahme',
+        noWeaponAmmo = 'Sie können keine Geisel nehmen, Sie haben keine Munition!'
     },
     ru = {
         controlsDescription = '[%s] - Освободить заложника [%s] - Убить его',
@@ -34,6 +37,7 @@ return {
         fail_no_ped_around = 'Рядом нет парня!',
         fail_no_weapon = 'У вас нет с собой оружия или, по крайней мере, у вас нет подходящего оружия!',
         controlDescription = 'Кнопка захвата заложника',
+        noWeaponAmmo = 'Вы не можете взять заложника, у вас нет боеприпасов!'
     },
     it = {
         controlsDescription = '[%s] - Per liberare l\'ostaggio [%s] - Per ucciderlo',
@@ -43,5 +47,6 @@ return {
         fail_no_ped_around = 'Non c\'è nessun ragazzo in giro!',
         fail_no_weapon = 'Non hai un\'arma con te, o almeno non hai l\'arma giusta!',
         controlDescription = 'Pulsante per prendere un ostaggio',
+        noWeaponAmmo = 'Non puoi prendere un ostaggio, non hai munizioni!'
     }
 }
