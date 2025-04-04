@@ -34,6 +34,18 @@ config.animations = {
     hostagedPedAnim = {
         anim = 'handsup_base',
         dict = 'missminuteman_1ig_2'
+    },
+    releasePed = {
+        hostagedPed = {
+            enable = true,
+            anim = 'shoved_back',
+            dict = 'reaction@shove'
+        },
+        kidnapperPed = {
+            enable = false,
+            anim = '',
+            dict = ''
+        }
     }
 }
 

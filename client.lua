@@ -117,6 +117,16 @@ RegisterNetEvent('HRHostage:on', function(status, targetNetId, netId, killTarget
         ClearPedTasks(targetPed)
         ClearPedTasks(ped)
 
+        if config.animations.releasePed.kidnapperPed.enable then
+            HRLib.RequestAnimDict(config.animations.releasePed.kidnapperPed.dict)
+            TaskPlayAnim(ped, config.animations.releasePed.kidnapperPed.dict, config.animations.releasePed.kidnapperPed.anim, 8.0, 8.0, -1, 4, 0, false, false, false)
+        end
+
+        if config.animations.releasePed.hostagedPed.enable then
+            HRLib.RequestAnimDict(config.animations.releasePed.hostagedPed.dict)
+            TaskPlayAnim(targetPed, config.animations.releasePed.hostagedPed.dict, config.animations.releasePed.hostagedPed.anim, 8.0, 8.0, -1, 4, 0, false, false, false)
+        end
+
         if IsPedAPlayer(targetPed) then
             SetPlayerControl(NetworkGetPlayerIndexFromPed(targetPed), true, 1 << 8)
         end

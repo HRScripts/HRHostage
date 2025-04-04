@@ -5,7 +5,7 @@
 ---@field access { command: { enable: boolean, commandName: string }, key: { enable: boolean, control: string } }
 ---@field weapons string[]
 ---@field hostageWithNoAmmo boolean
----@field animations { aimAtPed: { anim: string, dict: string }, hostagedPedAnim: { anim: string, dict: string } }
+---@field animations { aimAtPed: { anim: string, dict: string }, hostagedPedAnim: { anim: string, dict: string }, releasePed: { hostagedPed: { enable: boolean, anim: string, dict: string }, kidnapperPed: { enable: boolean, anim: string, dict: string } } }
 
 ---@class HRHostageTranslation
 ---@field controlsDescription string
