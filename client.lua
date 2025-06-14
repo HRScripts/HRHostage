@@ -32,15 +32,11 @@ local cmdFun = function(_, _, IPlayer)
                         hostaged = true
 
                         break
-                    else
-                        if i == #config.weapons then
-                            HRLib.Notify(Translation.fail_no_weapon)
-
-                            hostaged = false
-
-                            break
-                        end
                     end
+                end
+
+                if not hostaged then
+                    HRLib.Notify(Translation.fail_no_weapon, 'error')
                 end
             end
 
