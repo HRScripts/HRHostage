@@ -7,7 +7,7 @@ local onEvent = function(status, targetNetId, netId, killTarget)
     TriggerServerEvent('HRHostage:on', status, targetNetId, netId, killTarget, GetPlayerServerId(NetworkGetPlayerIndexFromPed(NetworkGetEntityFromNetworkId(targetNetId))))
 end
 
-local cmdFun = function(_, _, IPlayer)
+local cmdFun = function()
     local closestPed <const> = HRLib.ClosestPed()
     if closestPed then
         local targetPed <const>, distance <const>, hostaged = closestPed.ped, closestPed.distance, nil
@@ -26,8 +26,8 @@ local cmdFun = function(_, _, IPlayer)
                 hostaged = false
             else
                 for i=1, #config.weapons do
-                    if GetSelectedPedWeapon(IPlayer.ped) == joaat(config.weapons[i]) and HasPedGotWeapon(IPlayer.ped, joaat(config.weapons[i]), false) then
-                        onEvent(true, NetworkGetNetworkIdFromEntity(targetPed), NetworkGetNetworkIdFromEntity(IPlayer.ped))
+                    if GetSelectedPedWeapon(HRLib.IPlayer.ped) == joaat(config.weapons[i]) and HasPedGotWeapon(HRLib.IPlayer.ped, joaat(config.weapons[i]), false) then
+                        onEvent(true, NetworkGetNetworkIdFromEntity(targetPed), NetworkGetNetworkIdFromEntity(HRLib.IPlayer.ped))
 
                         hostaged = true
 
@@ -47,12 +47,12 @@ local cmdFun = function(_, _, IPlayer)
             if hostaged == true then
                 HRLib.showTextUI(Translation.controlsDescription:format(config.controls.release, config.controls.kill))
 
-                if IsEntityDead(IPlayer.ped) then
+                if IsEntityDead(HRLib.IPlayer.ped) then
                     onEvent(false)
                 else
                     while hostaged do
-                        if IsEntityDead(IPlayer.ped) or IsEntityDead(targetPed) then
-                            onEvent(false, NetworkGetNetworkIdFromEntity(targetPed), NetworkGetNetworkIdFromEntity(IPlayer.ped))
+                        if IsEntityDead(HRLib.IPlayer.ped) or IsEntityDead(targetPed) then
+                            onEvent(false, NetworkGetNetworkIdFromEntity(targetPed), NetworkGetNetworkIdFromEntity(HRLib.IPlayer.ped))
 
                             hostaged = false
 
@@ -60,15 +60,15 @@ local cmdFun = function(_, _, IPlayer)
                         end
 
                         if IsControlJustPressed(0, HRLib.Keys[config.controls.release]) then
-                            onEvent(false, NetworkGetNetworkIdFromEntity(targetPed), NetworkGetNetworkIdFromEntity(IPlayer.ped))
+                            onEvent(false, NetworkGetNetworkIdFromEntity(targetPed), NetworkGetNetworkIdFromEntity(HRLib.IPlayer.ped))
 
                             hostaged = false
 
                             return
                         elseif IsControlJustPressed(0, HRLib.Keys[config.controls.kill]) then
-                            if GetPedAmmoByType(IPlayer.ped, GetPedAmmoTypeFromWeapon(IPlayer.ped, GetSelectedPedWeapon(IPlayer.ped))) >= 1 then
-                                SetPedShootsAtCoord(IPlayer.ped, 0.0, 0.0, 0.0, false)
-                                onEvent(false, NetworkGetNetworkIdFromEntity(targetPed), NetworkGetNetworkIdFromEntity(IPlayer.ped), true)
+                            if GetPedAmmoByType(HRLib.IPlayer.ped, GetPedAmmoTypeFromWeapon(HRLib.IPlayer.ped, GetSelectedPedWeapon(HRLib.IPlayer.ped))) >= 1 then
+                                SetPedShootsAtCoord(HRLib.IPlayer.ped, 0.0, 0.0, 0.0, false)
+                                onEvent(false, NetworkGetNetworkIdFromEntity(targetPed), NetworkGetNetworkIdFromEntity(HRLib.IPlayer.ped), true)
 
                                 hostaged = false
 
@@ -79,7 +79,7 @@ local cmdFun = function(_, _, IPlayer)
                         end
 
                         if not IsEntityAttached(targetPed) and hostaged then
-                            TriggerServerEvent('HRHostage:attachPed', PedToNet(targetPed), PedToNet(IPlayer.ped))
+                            TriggerServerEvent('HRHostage:attachPed', PedToNet(targetPed), PedToNet(HRLib.IPlayer.ped))
                         end
 
                         Wait(4)
