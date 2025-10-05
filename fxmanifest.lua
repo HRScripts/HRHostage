@@ -6,7 +6,7 @@ name 'HRHostage'
 author 'HRScripts Development'
 description 'Take Hostage Script'
 repository 'https://github.com/HRScripts/HRHostage'
-version '1.0.7'
+version '1.0.8'
 
 shared_script '@HRLib/import.lua'
 
