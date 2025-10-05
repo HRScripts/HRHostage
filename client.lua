@@ -150,6 +150,6 @@ if config.access.command.enable then
 end
 
 if config.access.key.enable then
-    HRLib.RegCommand('+takeAHostage', cmdFun)
-    RegisterKeyMapping('+takeAHostage', Translation.controlDescription, 'keyboard', config.access.key.control)
+    HRLib.RegCommand('takeAHostage', cmdFun)
+    RegisterKeyMapping('takeAHostage', Translation.controlDescription, 'keyboard', config.access.key.control)
 end
